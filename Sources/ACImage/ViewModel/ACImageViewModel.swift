@@ -34,30 +34,37 @@ extension ACImageViewModel {
     func setupState(isLocalImage: Bool = false) {
         if isLocalImage {
             self.currentImageState = .localImage(path: nil)
+            objectWillChange.send()
         }
         else if let imgString = imageURL, let imgURL = URL(string: imgString) {
             if FileManager.default.fileExists(atPath: imgURL.path) {
                 if imgURL.pathExtension.lowercased().contains("gif") {
                     self.currentImageState = .animated(url: URL(fileURLWithPath: imgURL.path))
+                    objectWillChange.send()
                 }
                 else {
                     self.currentImageState = .localImage(path: imgURL.path)
+                    objectWillChange.send()
                 }
             }
-            else{
+            else {
                 self.currentImageState = .webImage(url: imgURL)
+                objectWillChange.send()
             }
         }
         else if let nameInitials = nameInitials {
             self.currentImageState = .nameIntials(nameInitials: nameInitials)
+            objectWillChange.send()
         }
-        else{
+        else {
             self.currentImageState = .failure
+            objectWillChange.send()
         }
         objectWillChange.send()
     }
     
     func setFailure() {
         self.currentImageState = .failure
+        objectWillChange.send()
     }
 }
