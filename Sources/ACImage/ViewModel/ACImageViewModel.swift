@@ -54,6 +54,7 @@ extension ACImageViewModel {
         else{
             self.currentImageState = .failure
         }
+        objectWillChange.send()
     }
     
     func setFailure() {
