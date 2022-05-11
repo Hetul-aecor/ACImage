@@ -11,40 +11,35 @@ import SDWebImageSwiftUI
 
 public struct ACImage: View {
     
-    public enum ImageStateValue {
-        case loading,nameIntials(nameInitials: String), localImage(img: UIImage), animated(url: URL), webImage(url: URL), failure
-    }
-    
-    @State private var currentImageState : ImageStateValue! = .loading
-    let imageURL: String?
     let imageObj : UIImage?
     let contentMode : ContentMode
-    let isZoomAllowed: Bool
-    let nameInitials: String?
+    let isZoomAllowed: Bool    
     
     let loadingImage : Image
     let failureImage : Image
     
     let size: CGSize
     
+    @StateObject var viewModel: ACImageViewModel
+    
     public init(_ url: String? = nil, imageObj : UIImage? = nil, contentMode : ContentMode = .fill, isZoomAllowed: Bool = false, nameInitials: String? = nil, loadingImage : Image, failureImage: Image, size: CGSize) {
         
-        self.imageURL = url
         self.imageObj = imageObj
         
         self.contentMode = contentMode
         self.isZoomAllowed = isZoomAllowed
-        self.nameInitials = nameInitials
         
         self.loadingImage = loadingImage
         self.failureImage = failureImage
         
         self.size = size
         
+        _viewModel = StateObject(wrappedValue: ACImageViewModel(imageURL: url, nameInitials: nameInitials))
+        
     }
     
     public var body: some View {
-        switch currentImageState {
+        switch viewModel.currentImageState {
             
         case .nameIntials(let nameInitials):
             makeInitialsView(nameInitials)
@@ -53,9 +48,22 @@ public struct ACImage: View {
             makeLocalAnimatedImageView(data)
                 .manageZoom(isZoomAllowed: isZoomAllowed)
             
-        case .localImage(let img):
-            makeLocalImageView(img)
-                .manageZoom(isZoomAllowed: isZoomAllowed)
+        case .localImage(let path):
+            if let imagePath = path {
+                if let img = UIImage(contentsOfFile: imagePath) {
+                    makeLocalImageView(img)
+                        .manageZoom(isZoomAllowed: isZoomAllowed)
+                }
+                else {
+                    makeFailureImage()
+                }
+            }
+            else {
+                if let img = imageObj {
+                    makeLocalImageView(img)
+                        .manageZoom(isZoomAllowed: isZoomAllowed)
+                }
+            }
             
         case .webImage(let url):
             makeRemoteImageView(url)
@@ -68,43 +76,12 @@ public struct ACImage: View {
             makeLoadingView()
                 .onAppear {
                     DispatchQueue.main.async {
-                        self.setupState()
+                        self.viewModel.setupState(isLocalImage: (self.imageObj != nil))
                     }
                 }
         }
     }
     
-}
-
-extension ACImage {
-    fileprivate func setupState(){
-        
-        if let img = imageObj {
-            self.currentImageState = .localImage(img: img)
-        }
-        else if let imgString = imageURL,let imgURL = URL(string: imgString) {
-            if FileManager.default.fileExists(atPath: imgURL.path){
-                if imgURL.pathExtension.lowercased().contains("gif") {
-                    self.currentImageState = .animated(url: URL(fileURLWithPath: imgURL.path))
-                }
-                else if let img = UIImage.init(contentsOfFile: imgURL.path){
-                    self.currentImageState = .localImage(img: img)
-                }
-                else{
-                    self.currentImageState = .failure
-                }
-            }
-            else{
-                self.currentImageState = .webImage(url: imgURL)
-            }
-        }
-        else if let nameInitials = nameInitials {
-            self.currentImageState = .nameIntials(nameInitials: nameInitials)
-        }
-        else{
-            self.currentImageState = .failure
-        }
-    }
 }
 
 extension ACImage {
@@ -114,7 +91,7 @@ extension ACImage {
         WebImage(url: imageURL)
             .onFailure(perform: { _ in
                 DispatchQueue.main.async {
-                    self.currentImageState = .failure
+                    self.viewModel.setFailure()
                 }
             })
             .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
