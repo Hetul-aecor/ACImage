@@ -39,6 +39,20 @@ public struct ACImage: View {
     }
     
     public var body: some View {
+        if #available(iOS 15.0, *) {
+            makeBody()
+        }
+        else {
+            if viewModel.forcedUpdate {
+                makeBody()
+            }
+            else {
+                makeBody()
+            }
+        }
+    }
+    
+    @ViewBuilder func makeBody() -> some View {
         switch viewModel.currentImageState {
             
         case .nameIntials(let nameInitials):
@@ -81,7 +95,6 @@ public struct ACImage: View {
                 }
         }
     }
-    
 }
 
 extension ACImage {
