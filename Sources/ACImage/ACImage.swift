@@ -13,26 +13,28 @@ public struct ACImage: View {
     
     let imageObj : UIImage?
     let contentMode : ContentMode
-    let isZoomAllowed: Bool    
+    let isZoomAllowed: Bool
     
-    let loadingImage : Image
+    let placeHolderImage : Image
     let failureImage : Image
     
     let size: CGSize
+    let placeHolderOrFailurImageRatio: CGFloat
     
     @StateObject var viewModel: ACImageViewModel
     
-    public init(_ url: String? = nil, imageObj : UIImage? = nil, contentMode : ContentMode = .fill, isZoomAllowed: Bool = false, nameInitials: String? = nil, loadingImage : Image, failureImage: Image, size: CGSize) {
+    public init(_ url: String? = nil, imageObj : UIImage? = nil, contentMode : ContentMode = .fill, isZoomAllowed: Bool = false, nameInitials: String? = nil, placeHolderImage : Image, failureImage: Image, size: CGSize, placeHolderOrFailurImageRatio: CGFloat = 0.4) {
         
         self.imageObj = imageObj
         
         self.contentMode = contentMode
         self.isZoomAllowed = isZoomAllowed
         
-        self.loadingImage = loadingImage
+        self.placeHolderImage = placeHolderImage
         self.failureImage = failureImage
         
         self.size = size
+        self.placeHolderOrFailurImageRatio = placeHolderOrFailurImageRatio
         
         _viewModel = StateObject(wrappedValue: ACImageViewModel(imageURL: url, nameInitials: nameInitials))
         
@@ -63,20 +65,16 @@ public struct ACImage: View {
                 .manageZoom(isZoomAllowed: isZoomAllowed)
             
         case .localImage(let path):
-            if let imagePath = path {
-                if let img = UIImage(contentsOfFile: imagePath) {
-                    makeLocalImageView(img)
-                        .manageZoom(isZoomAllowed: isZoomAllowed)
-                }
-                else {
-                    makeFailureImage()
-                }
+            if let imagePath = path, let img = UIImage(contentsOfFile: imagePath) {
+                makeLocalImageView(img)
+                    .manageZoom(isZoomAllowed: isZoomAllowed)
             }
-            else {
-                if let img = imageObj {
-                    makeLocalImageView(img)
-                        .manageZoom(isZoomAllowed: isZoomAllowed)
-                }
+            else if let img = imageObj {
+                makeLocalImageView(img)
+                    .manageZoom(isZoomAllowed: isZoomAllowed)
+            }
+            else{
+                makeFailureImage()
             }
             
         case .webImage(let url):
@@ -87,7 +85,7 @@ public struct ACImage: View {
             makeFailureImage()
             
         default:
-            makeLoadingView()
+            makePlaceHolderView()
                 .onAppear {
                     DispatchQueue.main.async {
                         self.viewModel.setupState(isLocalImage: (self.imageObj != nil))
@@ -109,7 +107,7 @@ extension ACImage {
             })
             .resizable() // Resizable like SwiftUI.Image, you must use this modifier or the view will use the image bitmap size
             .placeholder {
-                makeLoadingView()
+                makePlaceHolderView()
             }
             .indicator(.activity) // Activity Indicator
             .aspectRatio(contentMode: contentMode)
@@ -135,12 +133,12 @@ extension ACImage {
     }
     
     /// make Loading UI
-    @ViewBuilder private func makeLoadingView()->some View {
+    @ViewBuilder private func makePlaceHolderView()->some View {
         VStack{
-            loadingImage
+            placeHolderImage
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: size.width * 0.5, height: size.height * 0.5, alignment: .center)
+                .frame(width: size.width * placeHolderOrFailurImageRatio, height: size.height * placeHolderOrFailurImageRatio, alignment: .center)
         }
         .frame(width: size.width, height: size.height, alignment: .center)
         .clipped()
@@ -152,7 +150,7 @@ extension ACImage {
             failureImage
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: size.width * 0.5, height: size.height * 0.5, alignment: .center)
+                .frame(width: size.width * placeHolderOrFailurImageRatio, height: size.height * placeHolderOrFailurImageRatio, alignment: .center)
         }
         .frame(width: size.width, height: size.height, alignment: .center)
         .clipped()

@@ -42,32 +42,31 @@ class ACImageViewModel: ObservableObject {
 extension ACImageViewModel {
     func setupState(isLocalImage: Bool = false) {
         if isLocalImage {
-            self.currentImageState = .localImage(path: nil)
+            currentImageState = .localImage(path: nil)
         }
         else if let imgString = imageURL, let imgURL = URL(string: imgString) {
             if FileManager.default.fileExists(atPath: imgURL.path) {
                 if imgURL.pathExtension.lowercased().contains("gif") {
-                    self.currentImageState = .animated(url: URL(fileURLWithPath: imgURL.path))
+                    currentImageState = .animated(url: URL(fileURLWithPath: imgURL.path))
                 }
                 else {
-                    self.currentImageState = .localImage(path: imgURL.path)
+                    currentImageState = .localImage(path: imgURL.path)
                 }
             }
             else {
-                self.currentImageState = .webImage(url: imgURL)
+                currentImageState = .webImage(url: imgURL)
             }
         }
         else if let nameInitials = nameInitials {
-            self.currentImageState = .nameIntials(nameInitials: nameInitials)
+            currentImageState = .nameIntials(nameInitials: nameInitials)
         }
         else {
-            self.currentImageState = .failure
+            setFailure()
         }
-//        objectWillChange.send()
     }
     
     func setFailure() {
-        self.currentImageState = .failure
-//        objectWillChange.send()
+        currentImageState = .failure
     }
+    
 }
