@@ -17,19 +17,11 @@ class ACImageViewModel: ObservableObject {
         case failure
     }
     
-    var imageURL: String?
-    var nameInitials: String?
+    let imageURL: String?
+    let nameInitials: String?
     
-    @Published private(set) var currentImageState : ImageStateValue! = .loading {
-        didSet {
-            forcedUpdate.toggle()
-        }
-    }
-    @Published private(set) var forcedUpdate: Bool = false {
-        didSet {
-            objectWillChange.send()
-        }
-    }
+    @Published private(set) var currentImageState : ImageStateValue! = .loading
+    @Published private(set) var forcedUpdate: Bool = false
     
     init(imageURL: String? = nil, nameInitials: String?) {
         self.imageURL = imageURL
@@ -43,6 +35,8 @@ extension ACImageViewModel {
     func setupState(isLocalImage: Bool = false) {
         if isLocalImage {
             currentImageState = .localImage(path: nil)
+            forcedUpdate.toggle()
+            objectWillChange.send()
         }
         else if let imgString = imageURL, let imgURL = URL(string: imgString) {
             if FileManager.default.fileExists(atPath: imgURL.path) {
@@ -56,9 +50,13 @@ extension ACImageViewModel {
             else {
                 currentImageState = .webImage(url: imgURL)
             }
+            forcedUpdate.toggle()
+            objectWillChange.send()
         }
         else if let nameInitials = nameInitials {
             currentImageState = .nameIntials(nameInitials: nameInitials)
+            forcedUpdate.toggle()
+            objectWillChange.send()
         }
         else {
             setFailure()
@@ -67,6 +65,8 @@ extension ACImageViewModel {
     
     func setFailure() {
         currentImageState = .failure
+        forcedUpdate.toggle()
+        objectWillChange.send()
     }
     
 }

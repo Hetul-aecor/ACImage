@@ -40,17 +40,12 @@ public struct ACImage: View {
         
     }
     
-    public var body: some View {
-        if #available(iOS 15.0, *) {
+    public var body: some View {        
+        if viewModel.forcedUpdate {
             makeBody()
         }
         else {
-            if viewModel.forcedUpdate {
-                makeBody()
-            }
-            else {
-                makeBody()
-            }
+            makeBody()
         }
     }
     
