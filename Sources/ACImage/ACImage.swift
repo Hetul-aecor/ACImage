@@ -156,7 +156,8 @@ extension ACImage {
         VStack(alignment: .center) {
             Text(value)
                 .padding(6)
-                .minimumScaleFactor(0.001)
+                .scaledToFit()
+                .minimumScaleFactor(0.01)
                 .lineLimit(1)
         }
         .frame(width: size.width, height: size.height, alignment: .center)
