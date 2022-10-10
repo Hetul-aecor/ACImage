@@ -153,7 +153,7 @@ extension ACImage {
     
     /// Make initials UI
     @ViewBuilder private func makeInitialsView(_ value: String)->some View {
-        VStack(alignment: .center){
+        VStack(alignment: .center) {
             Text(value)
                 .padding(6)
                 .minimumScaleFactor(0.001)
