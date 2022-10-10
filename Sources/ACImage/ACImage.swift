@@ -155,7 +155,7 @@ extension ACImage {
     @ViewBuilder private func makeInitialsView(_ value: String)->some View {
         VStack(alignment: .center) {
             Text(value)
-                .padding(6)
+                .padding(4)
                 .scaledToFit()
                 .minimumScaleFactor(0.01)
                 .lineLimit(1)
