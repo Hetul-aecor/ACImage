@@ -19,12 +19,12 @@ class ACImageViewModel: ObservableObject {
     
     var imageURL: String?
     let nameInitials: String?
-    let urlType: URLType
+    let urlType: ResourceType
     
     @Published private(set) var currentImageState : ImageStateValue! = .loading
     @Published private(set) var forcedUpdate: Bool = false
     
-    init(imageURL: String? = nil, nameInitials: String?, urlType: URLType) {
+    init(imageURL: String? = nil, nameInitials: String?, urlType: ResourceType) {
         self.imageURL = imageURL
         self.nameInitials = nameInitials
         self.urlType = urlType
@@ -36,7 +36,7 @@ class ACImageViewModel: ObservableObject {
 extension ACImageViewModel {
     func setupState(isLocalImage: Bool = false) {
         switch urlType {
-        case .youtube, .youtubeEmbeded:
+        case .youtube:
             prepareThumbnailURL(type: urlType)
             if let imgString = imageURL, let url = URL(string: imgString) {
                 currentImageState = .webImage(url: url)
@@ -46,7 +46,7 @@ extension ACImageViewModel {
             }
             forcedUpdate.toggle()
             objectWillChange.send()
-        case .image:
+        case .url:
             if let imgString = imageURL, let imgURL = URL(string: imgString) {
                 if FileManager.default.fileExists(atPath: imgURL.path) {
                     if imgURL.pathExtension.lowercased().contains("gif") {
@@ -70,7 +70,7 @@ extension ACImageViewModel {
             else {
                 setFailure()
             }
-        case .none:
+        case .image:
             currentImageState = .localImage(path: nil)
             forcedUpdate.toggle()
             objectWillChange.send()
@@ -86,32 +86,29 @@ extension ACImageViewModel {
 }
 
 extension ACImageViewModel {
+    
+    fileprivate func getVideoId(_ url: String, regex: String) throws -> String? {
+        
+        let regex = try NSRegularExpression(pattern: regex, options: .caseInsensitive)
+        let range = NSRange(location: 0, length: url.count)
+        if let matchRange = regex.firstMatch(in: url, options: .reportCompletion, range: range)?.range {
+            let matchLength = (matchRange.lowerBound + matchRange.length) - 1
+            if range.contains(matchRange.lowerBound) &&
+                range.contains(matchLength) {
+                let start = url.index(url.startIndex, offsetBy: matchRange.lowerBound)
+                let end = url.index(url.startIndex, offsetBy: matchLength)
+                return String(url[start...end])
+            }
+        }
+        return nil
+    }
+    
     /// prepares thumbnail url
-    public func prepareThumbnailURL(type: URLType) {
+    public func prepareThumbnailURL(type: ResourceType) {
         switch type {
         case .youtube:
-            guard let url = imageURL?.removingPercentEncoding else {
-                return
-            }
-            do {
-                let regex = try NSRegularExpression(pattern: "((?<=(v|V)/)|(?<=be/)|(?<=(\\?|\\&)v=)|(?<=embed/))([\\w-]++)", options: .caseInsensitive)
-                let range = NSRange(location: 0, length: url.count)
-                if let matchRange = regex.firstMatch(in: url, options: .reportCompletion, range: range)?.range {
-                    let matchLength = (matchRange.lowerBound + matchRange.length) - 1
-                    if range.contains(matchRange.lowerBound) &&
-                        range.contains(matchLength) {
-                        let start = url.index(url.startIndex, offsetBy: matchRange.lowerBound)
-                        let end = url.index(url.startIndex, offsetBy: matchLength)
-                        let videoId = String(url[start...end])
-                        imageURL = "https://img.youtube.com/vi/\(videoId)/hqdefault.jpg"
-                    }
-                }
-            } catch {
-                print(error.localizedDescription)
-            }
-            
-        case .youtubeEmbeded:
-            guard let videoId = URL(string: self.imageURL ?? "")?.lastPathComponent else {
+            let regex = "((?<=(v|V)/)|(?<=be/)|(?<=(\\?|\\&)v=)|(?<=embed/))([\\w-]++)"
+            guard let url = imageURL?.removingPercentEncoding, let videoId = try? getVideoId(url, regex: regex) else {
                 return
             }
             imageURL = "https://img.youtube.com/vi/\(videoId)/hqdefault.jpg"
