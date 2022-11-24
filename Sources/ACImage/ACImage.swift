@@ -23,7 +23,7 @@ public struct ACImage: View {
     
     @StateObject var viewModel: ACImageViewModel
     
-    public init(_ url: String? = nil, imageObj : UIImage? = nil, contentMode : ContentMode = .fill, isZoomAllowed: Bool = false, nameInitials: String? = nil, placeHolderImage : Image, failureImage: Image, size: CGSize, placeHolderOrFailurImageRatio: CGFloat = 0.4) {
+    public init(_ url: String? = nil, imageObj : UIImage? = nil, urlType: URLType = .image, contentMode : ContentMode = .fill, isZoomAllowed: Bool = false, nameInitials: String? = nil, placeHolderImage : Image, failureImage: Image, size: CGSize, placeHolderOrFailurImageRatio: CGFloat = 0.4) {
         
         self.imageObj = imageObj
         
@@ -36,7 +36,7 @@ public struct ACImage: View {
         self.size = size
         self.placeHolderOrFailurImageRatio = placeHolderOrFailurImageRatio
         
-        _viewModel = StateObject(wrappedValue: ACImageViewModel(imageURL: url, nameInitials: nameInitials))
+        _viewModel = StateObject(wrappedValue: ACImageViewModel(imageURL: url, nameInitials: nameInitials, urlType: urlType))
         
     }
     
