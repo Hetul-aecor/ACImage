@@ -75,7 +75,6 @@ public struct ACImage: View {
         case .webImage(let url):
             makeRemoteImageView(url)
                 .manageZoom(isZoomAllowed: isZoomAllowed)
-                .transition(.opacity)
             
         case .failure:
             makeFailureImage()
@@ -83,10 +82,8 @@ public struct ACImage: View {
         default:
             makePlaceHolderView()
                 .onAppear {
-                    DispatchQueue.main.async {
-                        withAnimation(.easeOut(duration: 2)) {
-                            self.viewModel.setupState(isLocalImage: (self.imageObj != nil))
-                        }
+                    withAnimation(.easeOut) {
+                        self.viewModel.setupState(isLocalImage: (self.imageObj != nil))
                     }
                 }
         }
@@ -98,9 +95,6 @@ extension ACImage {
     /// make Remote Image UI
     @ViewBuilder private func makeRemoteImageView(_ imageURL: URL)->some View {
         WebImage(url: imageURL)
-            .onSuccess(perform: { image, data, cachetype in
-                
-            })
             .onFailure(perform: { _ in
                 DispatchQueue.main.async {
                     self.viewModel.setFailure()
@@ -114,6 +108,7 @@ extension ACImage {
             .aspectRatio(contentMode: contentMode)
             .frame(width: size.width, height: size.height, alignment: .center)
             .clipped()
+            .transition(.opacity)
     }
     
     /// make Animated Image UI
