@@ -38,7 +38,7 @@ extension ACImageViewModel {
         switch urlType {
         case .youtube:
             prepareThumbnailURL(type: urlType)
-            if let imgString = imageURL, let url = URL(string: imgString) {
+            if let imgString = imageURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let url = URL(string: imgString) {
                 currentImageState = .webImage(url: url)
             }
             else {
@@ -47,7 +47,7 @@ extension ACImageViewModel {
             forcedUpdate.toggle()
             objectWillChange.send()
         case .url:
-            if let imgString = imageURL, let imgURL = URL(string: imgString) {
+            if let imgString = imageURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let imgURL = URL(string: imgString) {
                 if FileManager.default.fileExists(atPath: imgURL.path) {
                     if imgURL.pathExtension.lowercased().contains("gif") {
                         currentImageState = .animated(url: URL(fileURLWithPath: imgURL.path))
