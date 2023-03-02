@@ -60,10 +60,26 @@ var body: some View {
 }
 ```
 
++ PlaceHolder UI
+
+![PlaceHolder View](https://github.com/pinalaecor/ACImage/blob/3aa4cfc4208397a8581474662a9bf42b6789475c/Images/placheHolderImage.png)
+
++ Image view UI
+
+![Downloaded Image View](https://github.com/pinalaecor/ACImage/blob/3aa4cfc4208397a8581474662a9bf42b6789475c/Images/DownloadedImage.png)
+
++ Initials UI
+
+![Initials View](https://github.com/pinalaecor/ACImage/blob/3aa4cfc4208397a8581474662a9bf42b6789475c/Images/initialsImage.png)
+
++ Failure UI
+
+![Failure Image.png View](https://github.com/pinalaecor/ACImage/blob/3aa4cfc4208397a8581474662a9bf42b6789475c/Images/failureImage.png)
+
 ## Author
 
-[Hetul](https://github.com/Hetul-aecor)
-[Pinal](https://github.com/pinalaecor)
+- [Hetul](https://github.com/Hetul-aecor)
+- [Pinal](https://github.com/pinalaecor)
 
 ## Thanks
 
