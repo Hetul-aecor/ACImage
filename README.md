@@ -11,6 +11,7 @@ A feature packed image view which allows you to focus on important tasks in your
 - [x] URL Image
 - [x] Place holder Image
 - [x] Failure Image
+- [x] Youtube Thumbnail from URL
 
 ## Version
 
