@@ -1,5 +1,12 @@
 # ACImage
 
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Hetul-aecor/ACImage/graphs/commit-activity)
+[![License](https://img.shields.io/github/license/Hetul-aecor/ACimage)](https://github.com/Hetul-aecor/ACImage)
+[![Platform](https://img.shields.io/badge/Platform-iOS-BLUE)](https://github.com/Hetul-aecor/ACImage)
+[![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
+[![GitHub contributors](https://badgen.net/github/contributors/Hetul-aecor/ACImage)](https://github.com/Hetul-aecor/ACImage/graphs/contributors/)
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/Hetul-aecor/ACImage.svg)](https://github.com/Hetul-aecor/ACImage/pull/)
+
 ## What's for
 A feature packed image view which allows you to focus on important tasks in your work and leave all image management to ACImage.
 
@@ -34,7 +41,7 @@ ACImage is available only through [Swift Package Manager](https://swift.org/pack
 
 + For App integration
 
-For App integration, you should using Xcode 14 or higher, to add this package to your App target. To do this, check [Adding Package Dependencies to Your App](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app?language=objc) about the step by step tutorial using Xcode.
+For App integration, you should using Xcode 14.2 or higher, to add this package to your App target. To do this, check [Adding Package Dependencies to Your App](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app?language=objc) about the step by step tutorial using Xcode.
 
 ```swift
 let package = Package(
