@@ -2,8 +2,8 @@
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/Hetul-aecor/ACImage/graphs/commit-activity)
 [![License](https://img.shields.io/github/license/Hetul-aecor/ACimage)](https://github.com/Hetul-aecor/ACImage)
-[![Platform](https://img.shields.io/badge/Platform-iOS-BLUE)](https://github.com/Hetul-aecor/ACImage)
-[![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
+[![Platform](https://img.shields.io/badge/Platform-iOS-green)](https://github.com/Hetul-aecor/ACImage)
+[![SwiftPM compatible](https://img.shields.io/badge/SwiftPM-compatible-green.svg)](https://swift.org/package-manager/)
 [![GitHub contributors](https://badgen.net/github/contributors/Hetul-aecor/ACImage)](https://github.com/Hetul-aecor/ACImage/graphs/contributors/)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Hetul-aecor/ACImage.svg)](https://github.com/Hetul-aecor/ACImage/pull/)
 
