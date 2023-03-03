@@ -86,6 +86,12 @@ var body: some View {
 - [SDWebImageSwiftUI](https://github.com/SDWebImage/SDWebImageSwiftUI.git)
 - [SDWebImage](https://github.com/SDWebImage/SDWebImage)
 
+## Contributing
+
+If you have suggestions for how this framework could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
+
+For more, check out the [Contributing Guide](CONTRIBUTING.md).
+
 ## License
 
 ACImage is available under the MIT license. See the LICENSE file for more info.
