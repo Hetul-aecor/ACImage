@@ -101,4 +101,4 @@ For more, check out the [Contributing Guide](CONTRIBUTING.md).
 
 ## License
 
-ACImage is available under the MIT license. See the LICENSE file for more info.
+ACImage is available under the [MIT license](LICENSE).
