@@ -56,7 +56,14 @@ let package = Package(
 
 ```swift
 var body: some View {
-    ACImage(imageURL, contentMode: .fill, nameInitials: nil, placeHolderImage: StaticImage.contentPlaceHolderImage.assetImage!, failureImage: StaticImage.imageDownloadfailure.assetImage!, size: size)
+    ACImage(imageURL, contentMode: .fill, nameInitials: nil, placeHolderImage: Constant.contentPlaceHolderImage, failureImage: Constant.imageDownloadfailure, size: imageSize)
+        .clipShape(Circle())
+        .background(
+            Circle()
+                .stroke(strokeColor, lineWidth: strokeWidth)
+        )
+        .foregroundColor(textColor)
+        .font(.custom(fontName, size: fontSize, relativeTo: relativeTo))
 }
 ```
 
