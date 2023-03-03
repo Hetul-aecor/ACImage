@@ -12,7 +12,7 @@ A feature packed image view which allows you to focus on important tasks in your
 
 ## Features
 
-- [x] Name Intials 
+- [x] Name Initials 
 - [x] Animated Image
 - [x] Local Image
 - [x] URL Image
