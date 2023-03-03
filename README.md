@@ -39,9 +39,7 @@ All issue reports, feature requests, contributions, and GitHub stars are welcome
 
 ACImage is available only through [Swift Package Manager](https://swift.org/package-manager/).
 
-+ For App integration
-
-For App integration, you should using Xcode 14.2 or higher, to add this package to your App target. To do this, check [Adding Package Dependencies to Your App](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app?language=objc) about the step by step tutorial using Xcode.
+For package integration, you should be using Xcode 14.2 or higher, to add this package to your App target. To do this, check [Adding Package Dependencies to Your App](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app?language=objc) about the step by step tutorial using Xcode.
 
 ```swift
 let package = Package(
